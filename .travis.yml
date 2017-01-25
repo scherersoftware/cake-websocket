@@ -1,0 +1,11 @@
+language: php
+
+php:
+  - 7.0
+
+before_script:
+  - composer self-update
+  - composer install --prefer-dist
+
+script:
+  - vendor/bin/phpcs -pn --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src

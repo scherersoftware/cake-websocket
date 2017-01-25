@@ -1,0 +1,34 @@
+{
+    "name": "scherersoftware/cake-websocket",
+    "description": "Websocket plugin for CakePHP",
+    "license": "MIT",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=7.0.0",
+        "cakephp/cakephp": ">=3.3.2 < 4.0.0",
+        "hoaproject/Websocket": "3.17.01.09",
+        "react/event-loop": "0.4.*|0.3.*",
+        "react/Socket": "^0.3 || ^0.4",
+        "cboden/ratchet": "^0.3.6",
+        "josegonzalez/cakephp-queuesadilla": "dev-master",
+        "codekanzlei/cake-frontend-bridge": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "cakephp/cakephp-codesniffer": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Websocket\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Websocket\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    },
+    "scripts": {
+        "cs-check": "vendor/bin/phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src"
+    }
+}
