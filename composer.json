@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "cakephp-plugin",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.1.0",
         "cakephp/cakephp": ">=3.3.2 < 4.0.0",
         "hoaproject/Websocket": "3.17.01.09",
         "react/event-loop": "0.4.*|0.3.*",
