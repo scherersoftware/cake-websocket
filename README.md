@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 
 
-## Usage in 3 easy steps
+## Usage in 4 easy steps
 
 #### 1. Define a new event
 
@@ -35,7 +35,7 @@ if ($this->Users->save($exampleUser)) {
 ...
 ```
 
-### 3. Let the client receive the event and define a callback
+#### 3. Let the client receive the event and define a callback
 
 **Example for `../users/index_controller.js`**
 
@@ -46,6 +46,13 @@ App.Main.Websocket.onEvent('userDataUpdated', function(payload) {
         alert('Someone changed the data of this user!');
     }
 }.bind(this));
+...
+```
+
+#### 4. Run the websocket server shell and start testing!
+
+```
+$ bin/cake websocket_server
 ```
 
 ---
