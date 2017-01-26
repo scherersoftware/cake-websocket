@@ -2,7 +2,7 @@ App.Controllers.ExampleUserDataPanelController = Frontend.AppController.extend({
     exampleUser: null,
     startup: function() {
         this.exampleUser = this.getVar('exampleUser');
-        App.Main.Websocket.onEvent('userDataUpdated', function(payload) {
+        App.Websocket.onEvent('userDataUpdated', function(payload) {
             if (payload.editedUserId === this.exampleUser.id) {
                 this.reloadPanel();
             }

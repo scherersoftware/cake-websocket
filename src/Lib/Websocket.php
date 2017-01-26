@@ -22,6 +22,10 @@ class Websocket
      */
     public static function publishEvent(string $eventName, array $payload = [], array $audience = []): bool
     {
+        if (PHP_SAPI == 'cli') {
+            return false;
+        }
+
         if (!self::validateEventConfig($eventName)) {
             throw new \Exception('Invalid Websocket event config.');
         }

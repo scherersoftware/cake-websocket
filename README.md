@@ -159,32 +159,9 @@ $this->FrontendBridge-setJson('websocketFrontendConfig', Websocket::getFrontendC
 ```
 
 
-#### 6. Make the JS websocket component globally accessible under `App.Main.Websocket`
+#### 6. Make the JS websocket component globally accessible under `App.Websocket`
 
-- `app_controller.js`
-
-	**path:**`/webroot/js/app/`
-
-    **component property**
-
-    ```
-    ...
-    components: ['Websocket'],
-    ...
-    ```
-
-
-	**_initialize() code:**
-
-
-	```
-    ...
-    if (!this.getVar('isAjax')) {
-        this.Websocket.setup();
-        App.Main.Websocket = this.Websocket;
-    }
-    ...
-    ```
+- Load the file /webroot/lib/websocket.js after the Frontend Bridge bootstrapping
 
 ### 7. Setup sessions properly if not alread done
 
