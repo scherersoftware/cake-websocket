@@ -78,4 +78,20 @@ class Websocket
 
         return true;
     }
+
+    /**
+     * get reduced websocket config for the frontend
+     *
+     * @return array
+     */
+    public static function getFrontendConfig(): array
+    {
+        $host = Configure::read('Websocket.ssl') ? 'wss://' : 'ws://';
+        $host .= Configure::read('Websocket.host');
+
+        return [
+            'host' => $host,
+            'port' => Configure::read('Websocket.port')
+        ];
+    }
 }

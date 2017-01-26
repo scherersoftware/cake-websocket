@@ -7,7 +7,7 @@ return [
         'sessionCookieName' => 'cws',
         'Queue' => [
             'name' => 'websocket',
-            'loopInterval' => .1,
+            'loopInterval' => 0.1,
         ]
     ]
 ];

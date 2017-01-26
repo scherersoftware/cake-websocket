@@ -7,7 +7,8 @@ App.Components.WebsocketComponent = Frontend.Component.extend({
         if (this.Controller.getVar('isAjax')) {
             return;
         }
-        var host   = 'ws://cws.dev:8889';
+        var config = this.Controller.getVar('websocketFrontendConfig');
+        var host   = config.host + ':' + config.port;
         try {
             this._socket = new WebSocket(host);
             this._socket.onopen = function (e) {

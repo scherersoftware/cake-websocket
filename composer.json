@@ -3,15 +3,15 @@
     "description": "Websocket plugin for CakePHP",
     "license": "MIT",
     "type": "cakephp-plugin",
+    "homepage": "https://github.com/scherersoftware/cake-websocket",
     "require": {
         "php": ">=7.1.0",
         "cakephp/cakephp": ">=3.3.2 < 4.0.0",
-        "hoaproject/Websocket": "3.17.01.09",
         "react/event-loop": "0.4.*|0.3.*",
         "react/Socket": "^0.3 || ^0.4",
         "cboden/ratchet": "^0.3.6",
-        "josegonzalez/cakephp-queuesadilla": "dev-master",
-        "codekanzlei/cake-frontend-bridge": "dev-master"
+        "josegonzalez/cakephp-queuesadilla": ">=0.4.0",
+        "codekanzlei/cake-frontend-bridge": ">=1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
