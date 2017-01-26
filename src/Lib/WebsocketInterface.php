@@ -9,8 +9,8 @@ use Cake\Utility\Hash;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 
-
-class WebsocketInterface implements WampServerInterface {
+class WebsocketInterface implements WampServerInterface
+{
 
     /**
      * All currently active connections with connection and user id
@@ -35,6 +35,7 @@ class WebsocketInterface implements WampServerInterface {
                 $connection['connection']->send(json_encode(compact('eventName', 'payload')));
             }
         }
+
         return true;
     }
 
@@ -128,6 +129,7 @@ class WebsocketInterface implements WampServerInterface {
         if (!empty($connection->WebSocket->request->getCookies()[$sessionCookieName])) {
             $sessionId = $connection->WebSocket->request->getCookies()[$sessionCookieName];
         }
+
         return $sessionId;
     }
 
@@ -144,7 +146,8 @@ class WebsocketInterface implements WampServerInterface {
         $sessionData = $dbs->read($sessionId);
         $unserializedData = [];
         $offset = 0;
-        while ($offset < strlen($sessionData)) {
+        $sessionDataLength = strlen($sessionData);
+        while ($offset < $sessionDataLength) {
             if (!strstr(substr($sessionData, $offset), "|")) {
                 throw new \Exception("Invalid data, remaining: " . substr($sessionData, $offset));
             }
@@ -155,7 +158,9 @@ class WebsocketInterface implements WampServerInterface {
             $data = unserialize(substr($sessionData, $offset));
             $unserializedData[$varname] = $data;
             $offset += strlen(serialize($data));
+            $sessionDataLength = strlen($sessionData);
         }
+
         return !empty($unserializedData['Auth']['User']['id']) ? (string)$unserializedData['Auth']['User']['id'] : null;
     }
 }

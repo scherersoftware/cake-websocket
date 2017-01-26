@@ -37,7 +37,6 @@ class WebsocketWorker extends Base
      * @param WebsocketInterface $websocketInterface instance of websocket interface
      * @param EngineInterface    $engine             queue engine (MySQL hard coded)
      * @param LoggerInterface    $logger             logger to use (error logger hard coded)
-     * @param array              $params             additional queue params (ignored)
      * @return void
      */
     public function __construct(LoopInterface $loop, WebsocketInterface $websocketInterface, EngineInterface $engine, LoggerInterface $logger = null)
@@ -45,7 +44,7 @@ class WebsocketWorker extends Base
         $this->__loop = $loop;
         $this->__websocketInterface = $websocketInterface;
 
-        $this->__loop->addPeriodicTimer(Configure::read('Websocket.Queue.loopInterval'), function() {
+        $this->__loop->addPeriodicTimer(Configure::read('Websocket.Queue.loopInterval'), function () {
             $this->work();
         });
 
@@ -61,6 +60,7 @@ class WebsocketWorker extends Base
         if (!$this->connect()) {
             $this->logger()->alert(sprintf('Worker unable to connect, exiting'));
             $this->dispatchEvent('Worker.job.connectionFailed');
+
             return false;
         }
 
@@ -72,6 +72,7 @@ class WebsocketWorker extends Base
         if (empty($item)) {
             $this->logger()->debug('No job!');
             $this->dispatchEvent('Worker.job.empty');
+
             return;
         }
 
@@ -92,6 +93,7 @@ class WebsocketWorker extends Base
             $this->logger()->debug('Success. Acknowledging job on queue.');
             $job->acknowledge();
             $this->dispatchEvent('Worker.job.success', ['job' => $job]);
+
             return;
         }
 
@@ -111,6 +113,7 @@ class WebsocketWorker extends Base
     {
         $maxIterations = $this->maxIterations ? sprintf(', max iterations %s', $this->maxIterations) : '';
         $this->logger()->info(sprintf('Starting worker%s', $maxIterations));
+
         return (bool)$this->engine->connection();
     }
 
@@ -147,9 +150,12 @@ class WebsocketWorker extends Base
         $this->setLogger($logger);
         $this->StatsListener = new StatsListener;
         $this->attachListener($this->StatsListener);
-        register_shutdown_function(array(&$this, 'shutdownHandler'));
+        register_shutdown_function([&$this, 'shutdownHandler']);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function disconnect()
     {
     }
