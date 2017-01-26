@@ -3,8 +3,26 @@
 [![Build Status](https://travis-ci.org/scherersoftware/cake-websocket.svg?branch=master)](https://travis-ci.org/scherersoftware/cake-websocket)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 
+## Introduction
+
+This CakePHP 3 plugin combines three packages to give you an easy way to add websocket capability to your web application.
+
+#### Packages
+
+- [Cake Frontend Bridge](https://github.com/scherersoftware/cake-frontend-bridge)
+- [Ratchet](https://github.com/ratchetphp/Ratchet)
+- [CakePHP Queuesadilla](https://github.com/josegonzalez/cakephp-queuesadilla)
+
+#### Requirements
+
+- CakePHP Database Sessions
+- PHP 7.1
+
+---
 
 ## Usage in 4 easy steps
+
+**Note:** You can checkout our [CakePHP App Template](https://github.com/scherersoftware/cake-app-template) for testing it on a clean app setup with preinstalled dependencies.
 
 #### 1. Define a new event
 
@@ -167,3 +185,16 @@ $this->FrontendBridge-setJson('websocketFrontendConfig', Websocket::getFrontendC
     }
     ...
     ```
+
+### 7. Setup sessions properly if not alread done
+
+Please follow the [Cake Documentation](https://book.cakephp.org/3.0/en/development/sessions.html#database-sessions)
+
+---
+
+## Roadmap
+
+#### 1.1.0
+- Unit Tests
+- Auto-reconnect on client side
+- Support of cake and cache sessions
