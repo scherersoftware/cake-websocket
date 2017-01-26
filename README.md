@@ -1,7 +1,10 @@
 ![CakePHP 3 Websocket  Plugin](https://raw.githubusercontent.com/scherersoftware/cake-websocket/master/websocket.png)
 
 [![Build Status](https://travis-ci.org/scherersoftware/cake-websocket.svg?branch=master)](https://travis-ci.org/scherersoftware/cake-websocket)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
+[![License](https://poser.pugx.org/scherersoftware/cake-websocket/license)](https://packagist.org/packages/scherersoftware/cake-websocket)
+[![Latest Stable Version](https://poser.pugx.org/scherersoftware/cake-websocket/v/stable)](https://packagist.org/packages/scherersoftware/cake-websocket)
+[![Latest Unstable Version](https://poser.pugx.org/scherersoftware/cake-websocket/v/unstable)](https://packagist.org/packages/scherersoftware/cake-websocket)
+[![Monthly Downloads](https://poser.pugx.org/scherersoftware/cake-websocket/d/monthly)](https://packagist.org/packages/scherersoftware/cake-websocket)
 
 ## Introduction
 
@@ -48,6 +51,7 @@ This CakePHP 3 plugin combines three packages to give you an easy way to add web
 use Websocket\Lib\Websocket;
 ...
 if ($this->Users->save($exampleUser)) {
+	// Do not pass sensitive data like passwords etc. as payload (second parameter)
     Websocket::publishEvent('userDataUpdated', ['editedUserId' => $exampleUser->id], []);
 }
 ...
@@ -97,9 +101,7 @@ Plugin::load('Websocket', ['bootstrap' => true, 'routes' => true]);
 
 #### 3. Configure app config
 
-- `app.php`
-
-	**path:**`/config/`
+- **File:** `/config/app.php`
 
     **example**
 
@@ -121,9 +123,7 @@ Plugin::load('Websocket', ['bootstrap' => true, 'routes' => true]);
 
 #### 4. Create and configure websocket events
 
-- `websocket_events.php`
-
-	**path:**`/config/`
+- **File:** `/config/websocket_events.php`
 
     **example**
 
@@ -154,7 +154,7 @@ use Websocket\Lib\Websocket;
 
 ```
 ...
-$this->FrontendBridge-setJson('websocketFrontendConfig', Websocket::getFrontendConfig());
+$this->FrontendBridge->setJson('websocketFrontendConfig', Websocket::getFrontendConfig());
 ...
 ```
 
@@ -173,5 +173,5 @@ Please follow the [Cake Documentation](https://book.cakephp.org/3.0/en/developme
 
 #### 1.1.0
 - Unit Tests
-- Auto-reconnect on client side
+- Add a websocket_connections table which store all active connections
 - Support of cake and cache sessions
