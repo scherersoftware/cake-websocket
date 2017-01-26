@@ -103,8 +103,6 @@ Plugin::load('Websocket', ['bootstrap' => true, 'routes' => true]);
 
 - **File:** `/config/app.php`
 
-    **example**
-
     ```
     <?php
     ...
@@ -124,8 +122,6 @@ Plugin::load('Websocket', ['bootstrap' => true, 'routes' => true]);
 #### 4. Create and configure websocket events
 
 - **File:** `/config/websocket_events.php`
-
-    **example**
 
     ```
     <?php
@@ -173,5 +169,5 @@ Please follow the [Cake Documentation](https://book.cakephp.org/3.0/en/developme
 
 #### 1.1.0
 - Unit Tests
-- Add a websocket_connections table which store all active connections
+- Add a websocket_connections table which stores all active connections
 - Support of cake and cache sessions
