@@ -17,6 +17,14 @@ class Websocket
      * @param  array $payload    additional data which is passed as is to websocket clients
      *                           Avoid sending sensitive data here!
      * @param array $audience    manipulate the configured audience
+     *                           options:  [
+     *                                      // whether all not authenticated clients should receive the event (overwrites event default)
+     *                                      'includeAllNotAuthenticated' => false,
+     *                                      // whether all authenticated clients should receive the event (overwrites event default)
+     *                                      'includeAllAuthenticated' => true,
+     *                                      // authenticated clients to send the event to (works independent of the settings above)
+     *                                      'userIds' => []
+     *                                     ]
      * @return bool
      * @throws \Exception if config of given event name is invalid
      */

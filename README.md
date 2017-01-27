@@ -8,9 +8,9 @@
 
 ## Introduction
 
-This CakePHP 3 plugin combines three packages to give you an easy way to add websocket capability to your web application.
+This CakePHP 3 plugin gives you an easy way to add websocket capability to your web application.
 
-#### Packages
+#### Main Packages
 
 - [Cake Frontend Bridge](https://github.com/scherersoftware/cake-frontend-bridge)
 - [Ratchet](https://github.com/ratchetphp/Ratchet)
@@ -51,8 +51,7 @@ This CakePHP 3 plugin combines three packages to give you an easy way to add web
 use Websocket\Lib\Websocket;
 ...
 if ($this->Users->save($exampleUser)) {
-	// Do not pass sensitive data like passwords etc. as payload (second parameter)
-    Websocket::publishEvent('userDataUpdated', ['editedUserId' => $exampleUser->id], []);
+    Websocket::publishEvent('userDataUpdated', ['editedUserId' => $exampleUser->id]);
 }
 ...
 ```
@@ -63,7 +62,7 @@ if ($this->Users->save($exampleUser)) {
 
 ```
 ...
-App.Main.Websocket.onEvent('userDataUpdated', function(payload) {
+App.Websocket.onEvent('userDataUpdated', function(payload) {
     if (payload.editedUserId === this.exampleUser.id) {
         alert('Someone changed the data of this user!');
     }
@@ -155,13 +154,13 @@ $this->FrontendBridge->setJson('websocketFrontendConfig', Websocket::getFrontend
 ```
 
 
-#### 6. Make the JS websocket component globally accessible under `App.Websocket`
+#### 6. Make the JS websocket lib globally accessible under `App.Websocket`
 
-- Load the file /webroot/lib/websocket.js after the Frontend Bridge bootstrapping
+- Load the file /webroot/lib/websocket.js after loading the Frontend Bridge assets
 
-### 7. Setup sessions properly if not alread done
+#### 7. Setup sessions properly if not alread done
 
-Please follow the [Cake Documentation](https://book.cakephp.org/3.0/en/development/sessions.html#database-sessions)
+Please follow the [Cake Database Sessions Documentation](https://book.cakephp.org/3.0/en/development/sessions.html#database-sessions)
 
 ---
 
