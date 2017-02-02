@@ -172,6 +172,18 @@ $this->FrontendBridge->setJson('websocketFrontendConfig', Websocket::getFrontend
 
 Please follow the [Cake Database Sessions Documentation](https://book.cakephp.org/3.0/en/development/sessions.html#database-sessions)
 
+#### 8. Setup Apache SSL ProxyPass if necessary
+
+Make sure these modules are activated:
+- mod_proxy.so
+- mod_proxy_wstunnel.so
+
+Edit your vhosts configuration and add this to the ssl section:
+
+```
+ProxyPass /wss/ ws://localhost:8889/
+```
+
 ---
 
 ## Roadmap

@@ -30,7 +30,7 @@ class Websocket
      */
     public static function publishEvent(string $eventName, array $payload = [], array $audience = []): bool
     {
-        if (PHP_SAPI == 'cli') {
+        if (defined('PHPUNIT_TESTSUITE')) {
             return false;
         }
 
