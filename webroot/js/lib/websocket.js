@@ -8,6 +8,7 @@ Frontend.App.Websocket = Class.extend({
     init: function(config) {
         this._host = config.host;
         this._port = config.port;
+        this._path = config.path;
     },
     setup: function() {
         if (this._isConnected) {
@@ -15,7 +16,7 @@ Frontend.App.Websocket = Class.extend({
         }
 
         try {
-            this._socket = new WebSocket(this._host + ':' + this._port);
+            this._socket = new WebSocket(this._host + ':' + this._port + this._path);
             this._socket.onopen = function (e) {
                 this._isConnected = true;
                 this.onOpened(e)
