@@ -9,6 +9,7 @@ Frontend.App.Websocket = Class.extend({
         this._host = config.host;
         this._port = config.port;
         this._path = config.path;
+        this._usePort = config.usePort;
     },
     setup: function() {
         if (this._isConnected) {
@@ -16,7 +17,7 @@ Frontend.App.Websocket = Class.extend({
         }
 
         try {
-            this._socket = new WebSocket(this._host + ':' + this._port + this._path);
+            this._socket = new WebSocket(this._buildUrl());
             this._socket.onopen = function (e) {
                 this._isConnected = true;
                 this.onOpened(e)
@@ -54,6 +55,14 @@ Frontend.App.Websocket = Class.extend({
         setTimeout(function() {
             this.setup();
         }.bind(this), 2000);
+    },
+    _buildUrl: function() {
+        var url = this._host;
+        if (this._usePort) {
+            url += ':' + this._port;
+        }
+        url += this._path;
+        return url;
     }
 });
 window.App.Websocket = new Frontend.App.Websocket(App.Main.appData.jsonData.websocketFrontendConfig);

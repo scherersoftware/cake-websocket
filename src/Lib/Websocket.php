@@ -99,13 +99,15 @@ class Websocket
     public static function getFrontendConfig(): array
     {
         $paths = Configure::read('Websocket.frontendPath');
+        $pathUsed = Configure::read('Websocket.ssl') ? $paths['ssl'] : $paths['normal'];
         $host = Configure::read('Websocket.ssl') ? 'wss://' : 'ws://';
         $host .= Configure::read('Websocket.host');
 
         return [
             'host' => $host,
             'port' => Configure::read('Websocket.port'),
-            'path' => Configure::read('Websocket.ssl') ? $paths['ssl'] : $paths['normal']
+            'path' => $pathUsed['path'],
+            'usePort' => $pathUsed['usePort']
         ];
     }
 }
