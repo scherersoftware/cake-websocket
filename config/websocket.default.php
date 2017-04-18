@@ -3,6 +3,7 @@ return [
     'Websocket' => [
         'ssl' => false,
         'host' => 'cws.dev',
+        'externalHost' => 'cws.dev',
         'port' => 8889,
         'frontendPath' => [
             'ssl' => [

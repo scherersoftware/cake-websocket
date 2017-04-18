@@ -101,7 +101,7 @@ class Websocket
         $paths = Configure::read('Websocket.frontendPath');
         $pathUsed = Configure::read('Websocket.ssl') ? $paths['ssl'] : $paths['normal'];
         $host = Configure::read('Websocket.ssl') ? 'wss://' : 'ws://';
-        $host .= Configure::read('Websocket.host');
+        $host .= Configure::read('Websocket.externalHost');
 
         return [
             'host' => $host,

@@ -107,7 +107,8 @@ Plugin::load('Websocket', ['bootstrap' => true, 'routes' => true]);
     ...
     'Websocket' => [
         'ssl' => false,
-        'host' => 'cws.dev',
+        'host' => '127.0.0.1',
+        'externalHost' => 'cws.dev',
         'port' => 8889,
         'frontendPath' => [
             'ssl' => [
