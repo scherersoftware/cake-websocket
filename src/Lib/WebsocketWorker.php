@@ -26,9 +26,16 @@ class WebsocketWorker extends Base
 
     /**
      * passed instance of websocket interface
-     * @var LoopInterface
+     * @var WebsocketInterface
      */
     private $__websocketInterface;
+
+    /**
+     * Custom logger
+     *
+     * @var LoggerInterface
+     */
+    private $__logger;
 
     /**
      * constructor
@@ -137,6 +144,9 @@ class WebsocketWorker extends Base
     {
         // FIXME clean this up maybe
         $logger = Log::engine('error');
+        if (!empty($this->__logger)) {
+            $logger = $this->__logger;
+        }
         $engine = Queue::engine('default');
         $engine->setLogger($logger);
         $engine->config('queue', Configure::read('Websocket.Queue.name'));
