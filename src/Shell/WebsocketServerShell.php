@@ -1,8 +1,10 @@
 <?php
 namespace Websocket\Shell;
 
+use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
@@ -21,6 +23,22 @@ class WebsocketServerShell extends Shell
 {
 
     /**
+     * Gets the option parser instance and configures it.
+     *
+     * @return ConsoleOptionParser
+     */
+    public function getOptionParser(): ConsoleOptionParser
+    {
+        $parser = parent::getOptionParser();
+        $parser->addOption('logger', [
+            'help' => 'Name of a configured logger',
+            'short' => 'l',
+        ]);
+
+        return $parser;
+    }
+
+    /**
      * main function
      *
      * @return void
@@ -30,7 +48,12 @@ class WebsocketServerShell extends Shell
         $loop = Factory::create();
         $websocketInterface = new WebsocketInterface;
 
-        $websocketWorker = new WebsocketWorker($loop, $websocketInterface, Queue::engine('default'));
+        $logger = null;
+        if (isset($this->params['logger']) && Log::engine($this->params['logger']) !== false) {
+            $logger = Log::engine($this->params['logger']);
+        }
+
+        $websocketWorker = new WebsocketWorker($loop, $websocketInterface, Queue::engine('default'), $logger);
 
         $serverSocket = new Server($loop);
         $serverSocket->listen(Configure::read('Websocket.port'), Configure::read('Websocket.host'));
