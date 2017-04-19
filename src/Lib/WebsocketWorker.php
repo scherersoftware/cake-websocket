@@ -50,6 +50,7 @@ class WebsocketWorker extends Base
     {
         $this->__loop = $loop;
         $this->__websocketInterface = $websocketInterface;
+        $this->__logger = $logger;
 
         $this->__loop->addPeriodicTimer(Configure::read('Websocket.Queue.loopInterval'), function () {
             $this->work();
