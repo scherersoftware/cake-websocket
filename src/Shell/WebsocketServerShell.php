@@ -4,8 +4,10 @@ namespace Websocket\Shell;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Console\Shell;
 use Cake\Core\Configure;
+use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+use Monitor\Error\SentryHandler;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\Wamp\WampServer;
@@ -54,6 +56,32 @@ class WebsocketServerShell extends Shell
         }
 
         $websocketWorker = new WebsocketWorker($loop, $websocketInterface, Queue::engine('default'), $logger);
+
+        $websocketWorker->attachListener('Worker.job.exception', function ($event) {
+            $exception = $event->data['exception'];
+            $exception->job = $event->data['job'];
+            $sentryHandler = new SentryHandler();
+            $sentryHandler->handle($exception);
+        });
+
+        $websocketWorker->attachListener('Worker.job.start', function ($event) {
+            ConnectionManager::get('default')->disconnect();
+        });
+
+        $websocketWorker->attachListener('Worker.job.success', function ($event) {
+            ConnectionManager::get('default')->disconnect();
+        });
+
+        $websocketWorker->attachListener('Worker.job.failure', function ($event) {
+            $failedJob = $event->data['job'];
+            $failedItem = $failedJob->item();
+            $options = [
+                'queue' => 'failed',
+                'failedJob' => $failedJob
+            ];
+            Queue::push($failedItem['class'], $failedJob->data(), $options);
+            ConnectionManager::get('default')->disconnect();
+        });
 
         $serverSocket = new Server($loop);
         $serverSocket->listen(Configure::read('Websocket.port'), Configure::read('Websocket.host'));
