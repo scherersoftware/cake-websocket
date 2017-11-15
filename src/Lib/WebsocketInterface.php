@@ -46,7 +46,7 @@ class WebsocketInterface implements WampServerInterface
     {
         $symphonySessionId = $connection->wrappedConn->WAMP->sessionId;
         $this->__connections[$symphonySessionId]['connection'] = $connection;
-        $this->__connections[$symphonySessionId]['userId'] = $this->__getSessionUserId($connection);
+        $this->__connections[$symphonySessionId]['userId'] = $this->__getUserIdFromSession($connection);
     }
 
     /**
@@ -122,7 +122,7 @@ class WebsocketInterface implements WampServerInterface
      * @param  ConnectionInterface $connection websocket client connection
      * @return null|string
      */
-    private function __getSessionUserId(ConnectionInterface $connection): ?string
+    private function __getUserIdFromSession(ConnectionInterface $connection): ?string
     {
         $userId = null;
         $sessionId = null;
