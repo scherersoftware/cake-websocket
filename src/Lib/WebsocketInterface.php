@@ -127,8 +127,8 @@ class WebsocketInterface implements WampServerInterface
         $userId = null;
         $sessionId = null;
         $sessionCookieName = Configure::read('Websocket.sessionCookieName');
-        if (!empty($connection->WebSocket->request->getCookies()[$sessionCookieName])) {
-            $sessionId = $connection->WebSocket->request->getCookies()[$sessionCookieName];
+        if (!empty($connection->WebSocket->request->getCookie($sessionCookieName))) {
+            $sessionId = $connection->WebSocket->request->getCookie($sessionCookieName);
         }
         if (!empty($sessionId)) {
             session_start();
