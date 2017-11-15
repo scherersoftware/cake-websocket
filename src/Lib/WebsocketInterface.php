@@ -3,7 +3,7 @@ namespace Websocket\Lib;
 
 use App\Lib\Environment;
 use Cake\Core\Configure;
-use Cake\Network\Session\DatabaseSession;
+use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Ratchet\ConnectionInterface;
@@ -14,9 +14,27 @@ class WebsocketInterface implements WampServerInterface
 
     /**
      * All currently active connections with connection and user id
+     *
      * @var array
      */
     private $__connections = [];
+
+    /**
+     * Cake Session instance
+     *
+     * @var \Cake\Network\Session
+     */
+    private $__session = null;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->__session = Session::create(Configure::read('Session'));
+    }
 
     /**
      * Publish an event base on given queue entry
@@ -127,16 +145,14 @@ class WebsocketInterface implements WampServerInterface
         $userId = null;
         $sessionId = null;
         $sessionCookieName = Configure::read('Websocket.sessionCookieName');
-        if (!empty($connection->WebSocket->request->getCookie($sessionCookieName))) {
-            $sessionId = $connection->WebSocket->request->getCookie($sessionCookieName);
+        if (!empty($connection->WebSocket->request->getCookies()[$sessionCookieName])) {
+            $sessionId = $connection->WebSocket->request->getCookies()[$sessionCookieName];
         }
         if (!empty($sessionId)) {
+            session_abort();
+            $this->__session->id($sessionId);
             session_start();
-            session_decode((new DatabaseSession)->read($sessionId));
-            $unserializedData = $_SESSION;
-            session_destroy();
-            $_SESSION = null;
-            $userId = !empty($unserializedData['Auth']['User']['id']) ? (string)$unserializedData['Auth']['User']['id'] : null;
+            $userId = $this->__session->read('Auth.User.id');
         }
 
         return $userId;

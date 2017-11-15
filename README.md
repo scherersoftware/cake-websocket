@@ -18,7 +18,7 @@ This CakePHP 3 plugin gives you an easy way to add websocket capability to your 
 
 #### Requirements
 
-- CakePHP Database Sessions
+- CakePHP 3.3 or higher
 - PHP 7.1
 
 ---
@@ -171,7 +171,7 @@ $this->FrontendBridge->setJson('websocketFrontendConfig', Websocket::getFrontend
 
 #### 7. Setup sessions properly if not alread done
 
-Please follow the [Cake Database Sessions Documentation](https://book.cakephp.org/3.0/en/development/sessions.html#database-sessions)
+Please follow the [Cake Sessions Documentation](https://book.cakephp.org/3.0/en/development/sessions.html)
 
 #### 8. Setup Apache SSL ProxyPass if necessary
 
@@ -192,4 +192,3 @@ ProxyPass /wss/ ws://localhost:8889/
 #### 1.1.0
 - Unit Tests
 - Add a websocket_connections table which stores all active connections
-- Support of cake and cache sessions
