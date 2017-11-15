@@ -46,7 +46,7 @@ class WebsocketInterface implements WampServerInterface
     {
         $symphonySessionId = $connection->wrappedConn->WAMP->sessionId;
         $this->__connections[$symphonySessionId]['connection'] = $connection;
-        $this->__connections[$symphonySessionId]['userId'] = $this->__getUserIdFromSession($this->__getSessionId($connection));
+        $this->__connections[$symphonySessionId]['userId'] = $this->__getUserIdFromSession($connection);
     }
 
     /**
@@ -117,50 +117,28 @@ class WebsocketInterface implements WampServerInterface
     }
 
     /**
-     * get cake session id from connection
+     * Get the user id from the session
      *
      * @param  ConnectionInterface $connection websocket client connection
      * @return null|string
      */
-    private function __getSessionId(ConnectionInterface $connection): ?string
+    private function __getUserIdFromSession(ConnectionInterface $connection): ?string
     {
+        $userId = null;
         $sessionId = null;
         $sessionCookieName = Configure::read('Websocket.sessionCookieName');
-        if (!empty($connection->WebSocket->request->getCookies()[$sessionCookieName])) {
-            $sessionId = $connection->WebSocket->request->getCookies()[$sessionCookieName];
+        if (!empty($connection->WebSocket->request->getCookie($sessionCookieName))) {
+            $sessionId = $connection->WebSocket->request->getCookie($sessionCookieName);
+        }
+        if (!empty($sessionId)) {
+            session_start();
+            session_decode((new DatabaseSession)->read($sessionId));
+            $unserializedData = $_SESSION;
+            session_destroy();
+            $_SESSION = null;
+            $userId = !empty($unserializedData['Auth']['User']['id']) ? (string)$unserializedData['Auth']['User']['id'] : null;
         }
 
-        return $sessionId;
-    }
-
-    /**
-     * get user id from session id using the session database
-     *
-     * @param  string|null $sessionId Session Id
-     * @return string|null
-     * @throws \Exception if parsing of session data breaks
-     */
-    private function __getUserIdFromSession(?string $sessionId): ?string
-    {
-        $dbs = new DatabaseSession();
-        $sessionData = $dbs->read($sessionId);
-        $unserializedData = [];
-        $offset = 0;
-        $sessionDataLength = strlen($sessionData);
-        while ($offset < $sessionDataLength) {
-            if (!strstr(substr($sessionData, $offset), "|")) {
-                throw new \Exception("Invalid data, remaining: " . substr($sessionData, $offset));
-            }
-            $pos = strpos($sessionData, "|", $offset);
-            $num = $pos - $offset;
-            $varname = substr($sessionData, $offset, $num);
-            $offset += $num + 1;
-            $data = unserialize(substr($sessionData, $offset));
-            $unserializedData[$varname] = $data;
-            $offset += strlen(serialize($data));
-            $sessionDataLength = strlen($sessionData);
-        }
-
-        return !empty($unserializedData['Auth']['User']['id']) ? (string)$unserializedData['Auth']['User']['id'] : null;
+        return $userId;
     }
 }
