@@ -38,14 +38,31 @@ Frontend.App.Websocket = Class.extend({
         this._socket.onmessage = function(event) {
             var data = JSON.parse(event.data);
             if (this._eventCallbacks[data.eventName] !== undefined) {
-                this._eventCallbacks[data.eventName](data.payload);
+                $.each(this._eventCallbacks[data.eventName], function(callbackId, callback) {
+                    if (typeof callback === "function") {
+                        callback(data.payload);
+                    }
+                }.bind(this));
             }
         }.bind(this);
     },
     onClosed: function(e) {
     },
     onEvent: function(action, callback) {
-        this._eventCallbacks[action] = callback;
+        if (!(action in this._eventCallbacks)) {
+            this._eventCallbacks[action] = [];
+        }
+        this._eventCallbacks[action].push(callback);
+
+        return this._eventCallbacks[action].length - 1;
+    },
+    removeEventCallback: function(action, callbackId) {
+        if (action in this._eventCallbacks && callbackId in this._eventCallbacks[action]) {
+            delete this._eventCallbacks[action][callbackId];
+            return true;
+        }
+
+        return false;
     },
     _triggerReconnect: function() {
         if (this._isConnected || this._reconnectCounter > 10) {
