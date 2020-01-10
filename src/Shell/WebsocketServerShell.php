@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Websocket\Shell;
 
 use Cake\Console\ConsoleOptionParser;
@@ -27,7 +28,7 @@ class WebsocketServerShell extends Shell
     /**
      * Gets the option parser instance and configures it.
      *
-     * @return ConsoleOptionParser
+     * @return \Cake\Console\ConsoleOptionParser
      */
     public function getOptionParser(): ConsoleOptionParser
     {
@@ -48,7 +49,7 @@ class WebsocketServerShell extends Shell
     public function main(): void
     {
         $loop = Factory::create();
-        $websocketInterface = new WebsocketInterface;
+        $websocketInterface = new WebsocketInterface();
 
         $logger = null;
         if (isset($this->params['logger']) && Log::engine($this->params['logger']) !== false) {
@@ -57,27 +58,27 @@ class WebsocketServerShell extends Shell
 
         $websocketWorker = new WebsocketWorker($loop, $websocketInterface, Queue::engine('default'), $logger);
 
-        $websocketWorker->attachListener('Worker.job.exception', function ($event) {
+        $websocketWorker->attachListener('Worker.job.exception', function ($event): void {
             $exception = $event->data['exception'];
             $exception->job = $event->data['job'];
             $sentryHandler = new SentryHandler();
             $sentryHandler->handle($exception);
         });
 
-        $websocketWorker->attachListener('Worker.job.start', function ($event) {
+        $websocketWorker->attachListener('Worker.job.start', function ($event): void {
             ConnectionManager::get('default')->disconnect();
         });
 
-        $websocketWorker->attachListener('Worker.job.success', function ($event) {
+        $websocketWorker->attachListener('Worker.job.success', function ($event): void {
             ConnectionManager::get('default')->disconnect();
         });
 
-        $websocketWorker->attachListener('Worker.job.failure', function ($event) {
+        $websocketWorker->attachListener('Worker.job.failure', function ($event): void {
             $failedJob = $event->data['job'];
             $failedItem = $failedJob->item();
             $options = [
                 'queue' => 'failed',
-                'failedJob' => $failedJob
+                'failedJob' => $failedJob,
             ];
             Queue::push($failedItem['class'], $failedJob->data(), $options);
             ConnectionManager::get('default')->disconnect();
@@ -86,7 +87,7 @@ class WebsocketServerShell extends Shell
         $serverSocket = new Server($loop);
         $serverSocket->listen(Configure::read('Websocket.port'), Configure::read('Websocket.host'));
 
-        $webServer = new IoServer(
+        new IoServer(
             new HttpServer(
                 new WsServer(
                     new WampServer(

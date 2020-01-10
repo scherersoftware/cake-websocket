@@ -1,11 +1,13 @@
 <?php
+
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Websocket\Lib\Websocket;
 
 $config = include 'websocket.default.php';
 $config = $config['Websocket'];
-if ($appWebsocketConfig = Configure::read('Websocket')) {
+$appWebsocketConfig = Configure::read('Websocket');
+if ($appWebsocketConfig) {
     $config = Hash::merge($config, $appWebsocketConfig);
 }
 Configure::write('Websocket', $config);
@@ -20,7 +22,7 @@ if (!file_exists($websocketEventsConfigFilePath)) {
     throw new \Exception('Please create a Websocket event config file: ' . $websocketEventsConfigFilePath);
 }
 
-$eventConfig = require($websocketEventsConfigFilePath);
+$eventConfig = require $websocketEventsConfigFilePath;
 
 Configure::write('Websocket.events', $eventConfig);
 

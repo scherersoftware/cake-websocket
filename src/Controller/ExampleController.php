@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Websocket\Controller;
 
 use App\Controller\AppController;
@@ -19,7 +20,7 @@ class ExampleController extends AppController
 
         $exampleUser = $this->Users->find()
             ->order([
-                'created' => 'ASC'
+                'created' => 'ASC',
             ])
             ->first();
 
@@ -37,7 +38,7 @@ class ExampleController extends AppController
 
         $exampleUser = $this->Users->find()
             ->order([
-                'created' => 'ASC'
+                'created' => 'ASC',
             ])
             ->first();
 
@@ -57,7 +58,7 @@ class ExampleController extends AppController
 
         $exampleUser = $this->Users->find()
             ->order([
-                'created' => 'ASC'
+                'created' => 'ASC',
             ])
             ->first();
 
@@ -65,7 +66,7 @@ class ExampleController extends AppController
             $exampleUser->accessible('*', false);
             $exampleUser->accessible(['firstname', 'lastname'], true);
             $this->Users->patchEntity($exampleUser, $this->request->data, [
-                'validate' => false
+                'validate' => false,
             ]);
 
             if ($this->Users->save($exampleUser)) {

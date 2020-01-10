@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Websocket\Lib;
 
 use Cake\Core\Configure;
@@ -20,39 +21,43 @@ class WebsocketWorker extends Base
 
     /**
      * passed instance of react loop interface
-     * @var LoopInterface
+     * @var \React\EventLoop\LoopInterface
      */
     private $__loop;
 
     /**
      * passed instance of websocket interface
-     * @var WebsocketInterface
+     * @var \Websocket\Lib\WebsocketInterface
      */
     private $__websocketInterface;
 
     /**
      * Custom logger
      *
-     * @var LoggerInterface
+     * @var \Psr\Log\LoggerInterface
      */
     private $__logger;
 
     /**
      * constructor
      *
-     * @param LoopInterface      $loop               instance of react loop interface
-     * @param WebsocketInterface $websocketInterface instance of websocket interface
-     * @param EngineInterface    $engine             queue engine (MySQL hard coded)
-     * @param LoggerInterface    $logger             logger to use (error logger hard coded)
+     * @param \React\EventLoop\LoopInterface $loop instance of react loop interface
+     * @param \Websocket\Lib\WebsocketInterface $websocketInterface instance of websocket interface
+     * @param \josegonzalez\Queuesadilla\Engine\EngineInterface $engine queue engine (MySQL hard coded)
+     * @param \Psr\Log\LoggerInterface $logger logger to use (error logger hard coded)
      * @return void
      */
-    public function __construct(LoopInterface $loop, WebsocketInterface $websocketInterface, EngineInterface $engine, LoggerInterface $logger = null)
-    {
+    public function __construct(
+        LoopInterface $loop,
+        WebsocketInterface $websocketInterface,
+        EngineInterface $engine,
+        LoggerInterface $logger = null
+    ): void {
         $this->__loop = $loop;
         $this->__websocketInterface = $websocketInterface;
         $this->__logger = $logger;
 
-        $this->__loop->addPeriodicTimer(Configure::read('Websocket.Queue.loopInterval'), function () {
+        $this->__loop->addPeriodicTimer(Configure::read('Websocket.Queue.loopInterval'), function (): void {
             $this->work();
         });
 
@@ -159,7 +164,7 @@ class WebsocketWorker extends Base
         $this->runtime = 0;
         $this->name = get_class($this->engine) . ' Worker';
         $this->setLogger($logger);
-        $this->StatsListener = new StatsListener;
+        $this->StatsListener = new StatsListener();
         $this->attachListener($this->StatsListener);
         register_shutdown_function([&$this, 'shutdownHandler']);
     }

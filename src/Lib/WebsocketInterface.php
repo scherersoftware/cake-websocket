@@ -1,11 +1,10 @@
 <?php
+declare(strict_types = 1);
 namespace Websocket\Lib;
 
-use App\Lib\Environment;
 use Cake\Core\Configure;
 use Cake\Network\Session;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Hash;
+use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 
@@ -31,7 +30,7 @@ class WebsocketInterface implements WampServerInterface
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(): void
     {
         $this->__session = Session::create(Configure::read('Session'));
     }
@@ -78,7 +77,7 @@ class WebsocketInterface implements WampServerInterface
     /**
      * {@inheritDoc}
      */
-    public function onError(ConnectionInterface $connection, \Exception $e): void
+    public function onError(ConnectionInterface $connection, Exception $e): void
     {
         unset($this->__connections[$connection->wrappedConn->WAMP->sessionId]);
     }
@@ -137,7 +136,7 @@ class WebsocketInterface implements WampServerInterface
     /**
      * Get the user id from the session
      *
-     * @param  ConnectionInterface $connection websocket client connection
+     * @param \Ratchet\ConnectionInterface $connection websocket client connection
      * @return null|string
      */
     private function __getUserIdFromSession(ConnectionInterface $connection): ?string

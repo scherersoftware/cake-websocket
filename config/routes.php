@@ -1,12 +1,13 @@
 <?php
+
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 Router::plugin(
     'Websocket',
     ['path' => '/websocket'],
-    function (RouteBuilder $routes) {
+    function (RouteBuilder $routes): void {
         $routes->fallbacks(DashedRoute::class);
     }
 );

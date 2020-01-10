@@ -1,8 +1,10 @@
 <?php
+declare(strict_types = 1);
 namespace Websocket\Lib;
 
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
+use Exception;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
 
 /**
@@ -35,16 +37,16 @@ class Websocket
         }
 
         if (!self::validateEventConfig($eventName)) {
-            throw new \Exception('Invalid Websocket event config.');
+            throw new Exception('Invalid Websocket event config.');
         }
 
         $audience = Hash::merge(Configure::read('Websocket.events.' . $eventName . '.audience'), $audience);
 
         return Queue::push($eventName, [
             'payload' => $payload,
-            'audience' => $audience
+            'audience' => $audience,
         ], [
-            'queue' => Configure::read('Websocket.Queue.name')
+            'queue' => Configure::read('Websocket.Queue.name'),
         ]);
     }
 
@@ -67,13 +69,15 @@ class Websocket
                 return false;
             }
 
-            if (!isset($eventConfig['audience']['includeAllNotAuthenticated'])
+            if (
+                !isset($eventConfig['audience']['includeAllNotAuthenticated'])
                 || !is_bool($eventConfig['audience']['includeAllNotAuthenticated'])
             ) {
                 return false;
             }
 
-            if (!isset($eventConfig['audience']['includeAllAuthenticated'])
+            if (
+                !isset($eventConfig['audience']['includeAllAuthenticated'])
                 || !is_bool($eventConfig['audience']['includeAllAuthenticated'])
             ) {
                 return false;
@@ -107,7 +111,7 @@ class Websocket
             'host' => $host,
             'port' => Configure::read('Websocket.port'),
             'path' => $pathUsed['path'],
-            'usePort' => $pathUsed['usePort']
+            'usePort' => $pathUsed['usePort'],
         ];
     }
 }

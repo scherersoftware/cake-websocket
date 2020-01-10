@@ -8,17 +8,17 @@ return [
         'frontendPath' => [
             'ssl' => [
                 'path' => '/wss/',
-                'usePort' => false
+                'usePort' => false,
             ],
             'normal' => [
                 'path' => '/',
-                'usePort' => true
-            ]
+                'usePort' => true,
+            ],
         ],
         'sessionCookieName' => 'cws',
         'Queue' => [
             'name' => 'websocket',
             'loopInterval' => 0.1,
-        ]
-    ]
+        ],
+    ],
 ];
