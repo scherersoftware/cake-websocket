@@ -8,7 +8,7 @@
         "php": ">=7.3.0",
         "cakephp/cakephp": ">=4.0.0",
         "react/event-loop": "0.4.*|0.3.*",
-        "react/Socket": "^0.3 || ^0.4",
+        "react/socket": "^0.3 || ^0.4",
         "cboden/ratchet": "^0.3.6",
         "josegonzalez/cakephp-queuesadilla": ">=0.7"
     },
