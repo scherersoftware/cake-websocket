@@ -76,6 +76,11 @@ App.Websocket.onEvent('userDataUpdated', function(payload) {
 $ bin/cake websocket_server
 ```
 
+- This is a long running php process with no output besides warnings/errors etc.   
+Seeing no output at all and the process not finishing on its own is expected and desired behavior. 
+- for changes to code executed by this process to take effect, you have to restart the process (kill and start it again with the same command)
+- for usage in production, we recommend something like http://supervisord.org/ to monitor and respawn long running processes like this
+
 ---
 
 ## Installation
