@@ -45,14 +45,13 @@ class WebsocketWorker extends Base
      * @param \Websocket\Lib\WebsocketInterface $websocketInterface instance of websocket interface
      * @param \josegonzalez\Queuesadilla\Engine\EngineInterface $engine queue engine (MySQL hard coded)
      * @param \Psr\Log\LoggerInterface $logger logger to use (error logger hard coded)
-     * @return void
      */
     public function __construct(
         LoopInterface $loop,
         WebsocketInterface $websocketInterface,
         EngineInterface $engine,
         LoggerInterface $logger = null
-    ): void {
+    ) {
         $this->__loop = $loop;
         $this->__websocketInterface = $websocketInterface;
         $this->__logger = $logger;
