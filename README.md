@@ -1,4 +1,4 @@
-![CakePHP 3 Websocket  Plugin](https://raw.githubusercontent.com/scherersoftware/cake-websocket/master/websocket.png)
+![CakePHP 4 Websocket  Plugin](https://raw.githubusercontent.com/scherersoftware/cake-websocket/master/websocket.png)
 
 [![Build Status](https://travis-ci.org/scherersoftware/cake-websocket.svg?branch=master)](https://travis-ci.org/scherersoftware/cake-websocket)
 [![License](https://poser.pugx.org/scherersoftware/cake-websocket/license)](https://packagist.org/packages/scherersoftware/cake-websocket)
@@ -8,7 +8,7 @@
 
 ## Introduction
 
-This CakePHP 3 plugin gives you an easy way to add websocket capability to your web application.
+This CakePHP 4 plugin gives you an easy way to add websocket capability to your web application.
 
 #### Main Packages
 
@@ -18,8 +18,8 @@ This CakePHP 3 plugin gives you an easy way to add websocket capability to your 
 
 #### Requirements
 
-- CakePHP 3.3 or higher
-- PHP 7.1
+- CakePHP 4 or higher
+- PHP 7.3
 
 ---
 
@@ -76,8 +76,8 @@ App.Websocket.onEvent('userDataUpdated', function(payload) {
 $ bin/cake websocket_server
 ```
 
-- This is a long running php process with no output besides warnings/errors etc.   
-Seeing no output at all and the process not finishing on its own is expected and desired behavior. 
+- This is a long running php process with no output besides warnings/errors etc.
+Seeing no output at all and the process not finishing on its own is expected and desired behavior.
 - for changes to code executed by this process to take effect, you have to restart the process (kill and start it again with the same command)
 - for usage in production, we recommend something like http://supervisord.org/ to monitor and respawn long running processes like this
 
@@ -191,9 +191,3 @@ ProxyPass /wss/ ws://localhost:8889/
 ```
 
 ---
-
-## Roadmap
-
-#### 1.1.0
-- Unit Tests
-- Add a websocket_connections table which stores all active connections
