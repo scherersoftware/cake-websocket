@@ -6,6 +6,7 @@ use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Exception;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
+use josegonzalez\Queuesadilla\Job\Base;
 
 /**
  * Use this class to enqueue Websocket events
@@ -42,12 +43,24 @@ class Websocket
 
         $audience = Hash::merge(Configure::read('Websocket.events.' . $eventName . '.audience'), $audience);
 
-        return Queue::push($eventName, [
+        return Queue::push('\Websocket\Lib\Websocket::executeEvent', [
             'payload' => $payload,
             'audience' => $audience,
+            'event' => $eventName,
         ], [
             'queue' => Configure::read('Websocket.Queue.name'),
         ]);
+    }
+
+    /**
+     * Dummy placeholder function so valid callable is found.
+     *
+     * @param \josegonzalez\Queuesadilla\Job\Base $job Queuesadilla job
+     * @return bool
+     */
+    public static function executeEvent(Base $job): bool
+    {
+        return true;
     }
 
     /**

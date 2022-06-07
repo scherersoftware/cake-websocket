@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace Websocket\Lib;
 
 use Cake\Core\Configure;
-use Cake\Network\Session;
+use Cake\Http\Session;
 use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
@@ -21,16 +21,14 @@ class WebsocketInterface implements WampServerInterface
     /**
      * Cake Session instance
      *
-     * @var \Cake\Network\Session
+     * @var \Cake\Http\Session
      */
     private $__session = null;
 
     /**
      * Constructor
-     *
-     * @return void
      */
-    public function __construct(): void
+    public function __construct()
     {
         $this->__session = Session::create(Configure::read('Session'));
     }
@@ -43,7 +41,7 @@ class WebsocketInterface implements WampServerInterface
      */
     public function publishEvent(array $queueEntry): bool
     {
-        $eventName = $queueEntry['class'];
+        $eventName = $queueEntry['args'][0]['event'];
         $payload = $queueEntry['args'][0]['payload'];
         $audience = $queueEntry['args'][0]['audience'];
 
@@ -151,7 +149,7 @@ class WebsocketInterface implements WampServerInterface
             session_abort();
             $this->__session->id($sessionId);
             session_start();
-            $userId = $this->__session->read('Auth.User.id');
+            $userId = (string)$this->__session->read('Auth.User.id');
         }
 
         return $userId;
