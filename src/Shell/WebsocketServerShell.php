@@ -8,7 +8,6 @@ use Cake\Core\Configure;
 use Cake\Datasource\ConnectionManager;
 use Cake\Log\Log;
 use Josegonzalez\CakeQueuesadilla\Queue\Queue;
-use Monitor\Error\SentryHandler;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\Wamp\WampServer;
@@ -24,7 +23,6 @@ use Websocket\Lib\WebsocketWorker;
  */
 class WebsocketServerShell extends Shell
 {
-
     /**
      * Gets the option parser instance and configures it.
      *
@@ -61,8 +59,6 @@ class WebsocketServerShell extends Shell
         $websocketWorker->attachListener('Worker.job.exception', function ($event): void {
             $exception = $event->data['exception'];
             $exception->job = $event->data['job'];
-            $sentryHandler = new SentryHandler();
-            $sentryHandler->handle($exception);
         });
 
         $websocketWorker->attachListener('Worker.job.start', function ($event): void {
@@ -84,10 +80,8 @@ class WebsocketServerShell extends Shell
             ConnectionManager::get('default')->disconnect();
         });
 
-        $serverSocket = new Server($loop);
-        $serverSocket->listen(Configure::read('Websocket.port'), Configure::read('Websocket.host'));
-
-        new IoServer(
+        $serverSocket = new Server('0.0.0.0' . ':' . Configure::read('Websocket.port'), $loop);
+        $webServer = new IoServer(
             new HttpServer(
                 new WsServer(
                     new WampServer(
@@ -95,7 +89,8 @@ class WebsocketServerShell extends Shell
                     )
                 )
             ),
-            $serverSocket
+            $serverSocket,
+            $loop
         );
 
         $loop->run();
