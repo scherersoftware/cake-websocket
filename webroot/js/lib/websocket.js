@@ -17,7 +17,7 @@ Frontend.App.Websocket = Class.extend({
         }
 
         try {
-            this._socket = new WebSocket(this._buildUrl());
+            this._socket = new WebSocket(this._buildUrl(), ['wamp']);
             this._socket.onopen = function (e) {
                 this._isConnected = true;
                 this.onOpened(e)
