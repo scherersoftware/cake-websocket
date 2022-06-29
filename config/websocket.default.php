@@ -16,6 +16,7 @@ return [
             ],
         ],
         'sessionCookieName' => 'cws',
+        'userIdPathInSession' => 'Auth.id',
         'Queue' => [
             'name' => 'websocket',
             'loopInterval' => 0.1,

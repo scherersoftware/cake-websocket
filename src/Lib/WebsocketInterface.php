@@ -173,7 +173,7 @@ class WebsocketInterface implements WampServerInterface, WsServerInterface
             session_abort();
             $this->__session->id($sessionId);
             session_start();
-            $userId = (string)$this->__session->read('Auth.User.id');
+            $userId = (string)$this->__session->read(Configure::read('Websocket.userIdPathInSession'));
         }
 
         return $userId;
