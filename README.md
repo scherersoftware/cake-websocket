@@ -1,6 +1,5 @@
 ![CakePHP 3 Websocket  Plugin](https://raw.githubusercontent.com/scherersoftware/cake-websocket/master/websocket.png)
 
-[![Build Status](https://travis-ci.org/scherersoftware/cake-websocket.svg?branch=master)](https://travis-ci.org/scherersoftware/cake-websocket)
 [![License](https://poser.pugx.org/scherersoftware/cake-websocket/license)](https://packagist.org/packages/scherersoftware/cake-websocket)
 [![Latest Stable Version](https://poser.pugx.org/scherersoftware/cake-websocket/v/stable)](https://packagist.org/packages/scherersoftware/cake-websocket)
 [![Latest Unstable Version](https://poser.pugx.org/scherersoftware/cake-websocket/v/unstable)](https://packagist.org/packages/scherersoftware/cake-websocket)
